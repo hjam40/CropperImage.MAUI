@@ -19,7 +19,7 @@
                 <Path x:Name="PlusPath" BindingContext="{x:Reference imageView}" HorizontalOptions="Center" VerticalOptions="Center"
                       Stroke="{Binding ButtonsColor}" Fill="{Binding ButtonsColor}" Scale="{Binding ButtonsScale}">
                     <Path.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding MoreZoom}" />
+                        <TapGestureRecognizer Command="{Binding MoreZoomCmd}" />
                     </Path.GestureRecognizers>
                 </Path>
             </StackLayout>
@@ -27,7 +27,7 @@
                 <Path x:Name="LessPath" BindingContext="{x:Reference imageView}" HorizontalOptions="Center" VerticalOptions="Center"
                       Stroke="{Binding ButtonsColor}" Fill="{Binding ButtonsColor}" Scale="{Binding ButtonsScale}">
                     <Path.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding LessZoom}" />
+                        <TapGestureRecognizer Command="{Binding LessZoomCmd}" />
                     </Path.GestureRecognizers>
                 </Path>
             </StackLayout>

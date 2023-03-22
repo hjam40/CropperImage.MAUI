@@ -172,7 +172,7 @@ public partial class CropperImageView : ContentView
         get => (ImageFormat)GetValue(PhotoImageFormatProperty);
         set
         {
-            croppedImageFormat = value switch
+            photoImageFormat = value switch
             {
                 ImageFormat.BMP => SKEncodedImageFormat.Bmp,
                 ImageFormat.JPEG => SKEncodedImageFormat.Jpeg,
@@ -318,8 +318,8 @@ public partial class CropperImageView : ContentView
     /// </summary>
     public bool ShowZoomButtons { get => (bool)GetValue(ShowZoomButtonsProperty); set => SetValue(ShowZoomButtonsProperty, value); }
 
-    public Command MoreZoom { get; set; }
-    public Command LessZoom { get; set; }
+    public Command MoreZoomCmd { get; set; }
+    public Command LessZoomCmd { get; set; }
     public Command SelectCommand { get; set; }
     private bool cropping = false;
     private byte[] imageData;
@@ -331,19 +331,22 @@ public partial class CropperImageView : ContentView
     private float imageY = 0;
     private float imageScale = 1;
     private float x, y, scale;
+    private int cwidth, cheight;
+    private readonly TapGestureRecognizer tapSelecction;
     public CropperImageView()
     {
         DefineDefaultStyles();
-        MoreZoom = new Command(() => { moreZoom(); });
-        LessZoom = new Command(() => { lessZoom(); });
+        MoreZoomCmd = new Command(() => { MoreZoom(); });
+        LessZoomCmd = new Command(() => { LessZoom(); });
         SelectCommand = new Command(() => { SelectImage(); });
         InitializeComponent();
         skCanvas.PaintSurface += SkCanvas_PaintSurface;
-        PanGestureRecognizer panGesture = new PanGestureRecognizer();
+        PanGestureRecognizer panGesture = new();
         panGesture.PanUpdated += OnPanUpdated;
         skCanvas.GestureRecognizers.Add(panGesture);
-        skCanvas.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => { if (SelectSourceOnTap) SelectImage(); }) });
-        PinchGestureRecognizer pinchGesture = new PinchGestureRecognizer();
+        tapSelecction = new TapGestureRecognizer { Command = new Command(() => { if (SelectSourceOnTap) SelectImage(); }) };
+        skCanvas.GestureRecognizers.Add(tapSelecction);
+        PinchGestureRecognizer pinchGesture = new();
         pinchGesture.PinchUpdated += OnPinchUpdated;
         skCanvas.GestureRecognizers.Add(pinchGesture);
         SetButtonsVisibility();
@@ -393,7 +396,7 @@ public partial class CropperImageView : ContentView
             else
                 CroppedImageBytes = croppedImage.Encode(croppedImageFormat, Math.Min(100, CroppedImageQuality)).ToArray();
 
-            MemoryStream ms = new MemoryStream();
+            MemoryStream ms = new();
             ms.Write(CroppedImageBytes);
             ms.Position = 0;
             CroppedImage = ImageSource.FromStream(() => ms);
@@ -413,7 +416,10 @@ public partial class CropperImageView : ContentView
                     scale = imageScale;
                     break;
                 case GestureStatus.Running:
-                    imageScale += scale * ((float)e.Scale - 1f);
+                    float incScale = scale * ((float)e.Scale - 1f);
+                    imageScale += incScale;
+                    imageX -= ((float)cwidth * incScale) / 2;
+                    imageY -= ((float)cheight * incScale) / 2;
                     imageScale = Math.Max(0.3f, imageScale);
                     break;
             }
@@ -429,8 +435,8 @@ public partial class CropperImageView : ContentView
             switch (e.StatusType)
             {
                 case GestureStatus.Started:
-                    x = imageX = imageX + (float)e.TotalX;
-                    y = imageY = imageY + (float)e.TotalY;
+                    x = imageX += (float)e.TotalX;
+                    y = imageY += (float)e.TotalY;
                     break;
                 case GestureStatus.Running:
                     imageX = x + (float)e.TotalX;
@@ -441,20 +447,24 @@ public partial class CropperImageView : ContentView
             ImageChanged = true;
         }
     }
-    private void moreZoom()
+    private void MoreZoom()
     {
         if (hasImage && imageScale < 3f)
         {
             imageScale += 0.05f;
+            imageX -= (cwidth * 0.05f) / 2;
+            imageY -= (cheight * 0.05f) / 2;
             skCanvas.InvalidateSurface();
             ImageChanged = true;
         }
     }
-    private void lessZoom()
+    private void LessZoom()
     {
         if (hasImage && imageScale > 0.2f)
         {
             imageScale -= 0.05f;
+            imageX += (cwidth * 0.05f)/2;
+            imageY += (cheight * 0.05f) / 2;
             skCanvas.InvalidateSurface();
             ImageChanged = true;
         }
@@ -465,7 +475,7 @@ public partial class CropperImageView : ContentView
         changeButton.IsVisible = ShowPickButton && hasImage && EditMode;
         zoomButtons.IsVisible = ShowZoomButtons && hasImage && EditMode;
     }
-    private Size GetResultSize(Size max, double width, double height)
+    private static Size GetResultSize(Size max, double width, double height)
     {
         if (max.Width > 0 && max.Height > 0)
         {
@@ -497,6 +507,10 @@ public partial class CropperImageView : ContentView
             {
                 image = SKImage.FromEncodedData(stream);
                 hasImage = image != null;
+                if (hasImage)
+                    skCanvas.GestureRecognizers.Remove(tapSelecction);
+                else if (!skCanvas.GestureRecognizers.Contains(tapSelecction))
+                    skCanvas.GestureRecognizers.Add(tapSelecction);
                 imageX = imageY = 0;
                 imageScale = 1;
                 SetButtonsVisibility();
@@ -514,7 +528,7 @@ public partial class CropperImageView : ContentView
                     }
                     else
                         PhotoBytes = image.Encode(photoImageFormat, Math.Min(100, PhotoImageQuality)).ToArray();
-                    MemoryStream ms = new MemoryStream();
+                    MemoryStream ms = new();
                     ms.Write(PhotoBytes);
                     ms.Position = 0;
                     Photo = ImageSource.FromStream(() => ms);
@@ -530,12 +544,11 @@ public partial class CropperImageView : ContentView
         if ((bool)oldValue != (bool)newValue)
         {
             CropperImageView iView = bindable as CropperImageView;
-            bool value = (bool)newValue;
             iView.SetButtonsVisibility();
             iView.skCanvas.InvalidateSurface();
         }
     }
-    private SKImage GetImage(string value)
+    private static SKImage GetImage(string value)
     {
         SKImage image = null;
 
@@ -568,16 +581,20 @@ public partial class CropperImageView : ContentView
             CropperImageView iView = bindable as CropperImageView;
             string value = newValue as string;
             iView.hasImage = false;
-            var image = iView.GetImage(value);
+            var image = GetImage(value);
 
             if (image != null)
             {
                 iView.image = image;
                 iView.hasImage = true;
+                iView.skCanvas.GestureRecognizers.Remove(iView.tapSelecction);
                 iView.imageX = iView.imageY = 0;
                 iView.imageScale = 1;
                 iView.SetButtonsVisibility();
             }
+            else if (!iView.skCanvas.GestureRecognizers.Contains(iView.tapSelecction))
+                iView.skCanvas.GestureRecognizers.Add(iView.tapSelecction);
+
             iView.skCanvas.InvalidateSurface();
         }
     }
@@ -591,10 +608,14 @@ public partial class CropperImageView : ContentView
         if (image != null)
         {
             hasImage = true;
+            skCanvas.GestureRecognizers.Remove(tapSelecction);
             imageX = imageY = 0;
             imageScale = 1;
             SetButtonsVisibility();
         }
+        else if (!skCanvas.GestureRecognizers.Contains(tapSelecction))
+            skCanvas.GestureRecognizers.Add(tapSelecction);
+
         skCanvas.InvalidateSurface();
     }
     public void SetSource(byte[] imageBytes)
@@ -607,10 +628,14 @@ public partial class CropperImageView : ContentView
         if (image != null)
         {
             hasImage = true;
+            skCanvas.GestureRecognizers.Remove(tapSelecction);
             imageX = imageY = 0;
             imageScale = 1;
             SetButtonsVisibility();
         }
+        else if (!skCanvas.GestureRecognizers.Contains(tapSelecction))
+            skCanvas.GestureRecognizers.Add(tapSelecction);
+
         skCanvas.InvalidateSurface();
     }
     private static void DefaultSourceChanged(BindableObject bindable, object oldValue, object newValue)
@@ -619,8 +644,7 @@ public partial class CropperImageView : ContentView
         {
             CropperImageView iView = bindable as CropperImageView;
             string value = newValue as string;
-            iView.hasImage = false;
-            var image = iView.GetImage(value);
+            var image = GetImage(value);
 
             if (image != null)
             {
@@ -650,6 +674,8 @@ public partial class CropperImageView : ContentView
     private void SkCanvas_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
     {
         var canvas = e.Surface.Canvas;
+        cwidth = e.Info.Width;
+        cheight = e.Info.Height;
         if (EditMode)
             canvas.Clear(BackgroundColor != null ? BackgroundColor.ToSKColor() : SKColors.White);
         else
@@ -698,10 +724,9 @@ public partial class CropperImageView : ContentView
         if (CropperRadiusPer > 0 && EditMode)
         {
             float CropRadius = Math.Min(e.Info.Width, e.Info.Height) / 2 * CropperRadiusPer / 100f;
-            SKPath maskPath = new SKPath { FillType = SKPathFillType.InverseWinding };
+            SKPath maskPath = new() { FillType = SKPathFillType.InverseWinding };
             maskPath.AddRect(SKRect.Create(e.Info.Size));
-            //maskPath.AddCircle(e.Info.Width / 2, e.Info.Height / 2, CropRadius);
-            SKPaint cropPaint = new SKPaint { Style = SKPaintStyle.Fill, Color = Color.FromRgba(0, 0, 0, 0.5).ToSKColor() };
+            SKPaint cropPaint = new() { Style = SKPaintStyle.Fill, Color = Color.FromRgba(0, 0, 0, 0.5).ToSKColor() };
             maskPath.Close();
             if (CropperFigure == GeometryType.Circle)
                 canvas.ClipRoundRect(new SKRoundRect(SKRect.Create(e.Info.Width / 2 - CropRadius, e.Info.Height / 2 - CropRadius, CropRadius * 2, CropRadius * 2), CropRadius * 2), SKClipOperation.Difference);

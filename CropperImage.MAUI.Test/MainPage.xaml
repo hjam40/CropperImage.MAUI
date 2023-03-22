@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ci="clr-namespace:CropperImage.MAUI;assembly=CropperImage.MAUI"
+             x:Class="CropperImage.MAUI.Test.MainPage">
+
+    <Grid RowDefinitions="100,*">
+        <HorizontalStackLayout Grid.Row="0" VerticalOptions="Center" HorizontalOptions="Center" Spacing="5">
+            <ci:PortraitView BindingContext="{x:Reference cropper}" ImageSource="{Binding CroppedImage}" 
+                         WidthRequest="90" HeightRequest="90" Text="PR" FontSize="40" Fill="blue" TextColor="White" Stroke="orange">
+                <ci:PortraitView.StrokeShape>
+                    <RoundRectangle CornerRadius="30,0,0,30" />
+                </ci:PortraitView.StrokeShape>
+            </ci:PortraitView>
+            <ci:PortraitView x:Name="portrait" WidthRequest="90" HeightRequest="90" Text="HA" FontSize="40"/>
+        </HorizontalStackLayout>
+        <VerticalStackLayout Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center">
+            <ci:CropperImageView x:Name="cropper" HorizontalOptions="Center" WidthRequest="300" HeightRequest="300" EditMode="True" 
+                                 ButtonsColor="White" CropperFigure="Circle" ShowSelectButton="False" SelectSourceOnTap="True"
+                                 CroppedImageFormat="PNG" CroppedImageMaxResolution="200,200"
+                                 PhotoImageFormat="JPEG" PhotoImageMaxResolution="1920,1080" />
+            <HorizontalStackLayout>
+                <Button Text="Crop Circle" HorizontalOptions="Center" Margin="5" Clicked="Button1_Clicked" />
+                <Button Text="Crop Square" HorizontalOptions="Center" Margin="5" Clicked="Button_Clicked" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
+
+</ContentPage>

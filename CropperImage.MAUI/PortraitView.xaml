@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CropperImage.MAUI.PortraitView" x:Name="portraitView">
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+        <Border x:Name="border" BindingContext="{x:Reference portraitView}" HorizontalOptions="Center" VerticalOptions="Center"
+                Stroke="{Binding Stroke}" StrokeShape="{Binding StrokeShape}" StrokeThickness="{Binding StrokeThickness}" Background="{Binding Fill}">
+            <Grid>
+                <Image x:Name="image" BindingContext="{x:Reference portraitView}" HorizontalOptions="Fill" VerticalOptions="Fill" Source="{Binding ImageSource}" />
+                <Label x:Name="textLabel" BindingContext="{x:Reference portraitView}" HorizontalOptions="Center" VerticalOptions="Center"
+                   Text="{Binding Text}" TextColor="{Binding TextColor}" FontAttributes="{Binding FontAttributes}" FontSize="{Binding FontSize}" FontFamily="{Binding FontFamily}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentView>

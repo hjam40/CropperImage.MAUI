@@ -1,5 +1,4 @@
 using Microsoft.Maui.Controls.Shapes;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CropperImage.MAUI;
 

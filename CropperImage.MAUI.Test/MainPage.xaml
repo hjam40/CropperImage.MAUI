@@ -16,9 +16,7 @@
         </HorizontalStackLayout>
         <VerticalStackLayout Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center">
             <ci:CropperImageView x:Name="cropper" HorizontalOptions="Center" WidthRequest="300" HeightRequest="300" EditMode="True" 
-                                 ButtonsColor="White" CropperFigure="Circle" ShowSelectButton="False" SelectSourceOnTap="True"
-                                 CroppedImageFormat="PNG" CroppedImageMaxResolution="200,200"
-                                 PhotoImageFormat="JPEG" PhotoImageMaxResolution="1920,1080" />
+                                 ButtonsColor="White" CropperFigure="Circle" ShowSelectButton="False" SelectSourceOnTap="True"/>
             <HorizontalStackLayout>
                 <Button Text="Crop Circle" HorizontalOptions="Center" Margin="5" Clicked="Button1_Clicked" />
                 <Button Text="Crop Square" HorizontalOptions="Center" Margin="5" Clicked="Button_Clicked" />

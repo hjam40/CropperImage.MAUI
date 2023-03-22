@@ -25,6 +25,9 @@
 		<PackageTags>csharp; dotnet; cross-platform; crop; image; image-cropper; cropper-component; cropper-view; avatar-view; portrait-view;  plugin; maui; dotnet-maui;</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageProjectUrl>https://github.com/hjam40/CropperImage.MAUI</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/hjam40/CropperImage.MAUI</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 	</PropertyGroup>
 
 	<ItemGroup>

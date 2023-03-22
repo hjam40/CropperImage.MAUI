@@ -1,12 +1,6 @@
 using SkiaSharp.Views.Maui;
 using SkiaSharp;
 using Microsoft.Maui.Controls.Shapes;
-using SkiaSharp.Views.Maui.Controls;
-using Microsoft.Maui.Storage;
-using System.Reflection;
-using Microsoft.Maui;
-using System.Diagnostics;
-using System.Security.Cryptography;
 
 namespace CropperImage.MAUI;
 
@@ -527,10 +521,6 @@ public partial class CropperImageView : ContentView
                     OnPropertyChanged(nameof(Photo));
                     OnPropertyChanged(nameof(PhotoBytes));
                 });
-                if (Photo == null)
-                    Debug.WriteLine("Salgo NULL");
-                else
-                    Debug.WriteLine("Salgo NO NULL");
             }
             catch { }
         }

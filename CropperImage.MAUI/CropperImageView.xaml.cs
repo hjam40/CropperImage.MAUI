@@ -11,6 +11,7 @@ public partial class CropperImageView : ContentView
     private const string LESSBUTTONDATA = "M7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H7Z M12 1C5.92487 1 1 5.92487 1 12C1 18.0751 5.92487 23 12 23C18.0751 23 23 18.0751 23 12C23 5.92487 18.0751 1 12 1ZM3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z";
     private const string PICKBUTTONDATA = "M9.15023 3.01742C9.13605 3.03985 9.12278 3.0676 9.11298 3.09958C9.11044 3.10789 9.10778 3.11617 9.10502 3.12442L8.36963 5.31787C8.23301 5.72537 7.85129 6 7.4215 6H3C2.44772 6 2 6.44772 2 7V20C2 20.5523 2.44771 21 3 21H21C21.5523 21 22 20.5523 22 20V7C22 6.44771 21.5523 6 21 6H16.331C15.9011 6 15.5194 5.72528 15.3828 5.31769L14.6479 3.12423C14.6452 3.11605 14.6425 3.10783 14.64 3.09958C14.6302 3.0676 14.6169 3.03985 14.6027 3.01742C14.5986 3.01089 14.5946 3.00509 14.5908 3H9.16221C9.1584 3.00509 9.15437 3.01089 9.15023 3.01742ZM7.20525 2.49911C7.43535 1.76672 8.10563 1 9.06392 1H14.6891C15.6474 1 16.3177 1.76679 16.5478 2.49922L17.0506 4H21C22.6569 4 24 5.34315 24 7V20C24 21.6569 22.6569 23 21 23H3C1.34315 23 0 21.6569 0 20V7C0 5.34315 1.34315 4 3 4H6.70206L7.20525 2.49911ZM7 13C7 10.2386 9.23858 8 12 8C14.7614 8 17 10.2386 17 13C17 15.7614 14.7614 18 12 18C9.23858 18 7 15.7614 7 13ZM12 10C10.3431 10 9 11.3431 9 13C9 14.6569 10.3431 16 12 16C13.6569 16 15 14.6569 15 13C15 11.3431 13.6569 10 12 10Z";
     private const string SELECTBUTTONDATA = "M9.15023 3.01742C9.13605 3.03985 9.12278 3.0676 9.11298 3.09958C9.11044 3.10789 9.10778 3.11617 9.10502 3.12442L8.36963 5.31787C8.23301 5.72537 7.85129 6 7.4215 6H3C2.44772 6 2 6.44772 2 7V20C2 20.5523 2.44771 21 3 21H21C21.5523 21 22 20.5523 22 20V7C22 6.44771 21.5523 6 21 6H16.331C15.9011 6 15.5194 5.72528 15.3828 5.31769L14.6479 3.12423C14.6452 3.11605 14.6425 3.10783 14.64 3.09958C14.6302 3.0676 14.6169 3.03985 14.6027 3.01742C14.5986 3.01089 14.5946 3.00509 14.5908 3H9.16221C9.1584 3.00509 9.15437 3.01089 9.15023 3.01742ZM7.20525 2.49911C7.43535 1.76672 8.10563 1 9.06392 1H14.6891C15.6474 1 16.3177 1.76679 16.5478 2.49922L17.0506 4H21C22.6569 4 24 5.34315 24 7V20C24 21.6569 22.6569 23 21 23H3C1.34315 23 0 21.6569 0 20V7C0 5.34315 1.34315 4 3 4H6.70206L7.20525 2.49911ZM7 13C7 10.2386 9.23858 8 12 8C14.7614 8 17 10.2386 17 13C17 15.7614 14.7614 18 12 18C9.23858 18 7 15.7614 7 13ZM12 10C10.3431 10 9 11.3431 9 13C9 14.6569 10.3431 16 12 16C13.6569 16 15 14.6569 15 13C15 11.3431 13.6569 10 12 10Z";
+    private const string EDITBUTTONDATA = "M12 8.00012L4 16.0001V20.0001L8 20.0001L16 12.0001M12 8.00012L14.8686 5.13146L14.8704 5.12976C15.2652 4.73488 15.463 4.53709 15.691 4.46301C15.8919 4.39775 16.1082 4.39775 16.3091 4.46301C16.5369 4.53704 16.7345 4.7346 17.1288 5.12892L18.8686 6.86872C19.2646 7.26474 19.4627 7.46284 19.5369 7.69117C19.6022 7.89201 19.6021 8.10835 19.5369 8.3092C19.4628 8.53736 19.265 8.73516 18.8695 9.13061L18.8686 9.13146L16 12.0001M12 8.00012L16 12.0001";
     //Default styles
     private static bool STYLESINITIATED = false;
     private static readonly Style TITLESTYLE = new(typeof(Label));
@@ -37,13 +38,16 @@ public partial class CropperImageView : ContentView
     public static readonly BindableProperty LessButtonDataProperty = BindableProperty.Create(nameof(LessButtonData), typeof(string), typeof(CropperImageView), LESSBUTTONDATA);
     public static readonly BindableProperty PickButtonDataProperty = BindableProperty.Create(nameof(PickButtonData), typeof(string), typeof(CropperImageView), PICKBUTTONDATA);
     public static readonly BindableProperty SelectButtonDataProperty = BindableProperty.Create(nameof(SelectButtonData), typeof(string), typeof(CropperImageView), SELECTBUTTONDATA);
+    public static readonly BindableProperty EditButtonDataProperty = BindableProperty.Create(nameof(EditButtonData), typeof(string), typeof(CropperImageView), EDITBUTTONDATA);
     public static readonly BindableProperty ButtonsColorProperty = BindableProperty.Create(nameof(ButtonsColor), typeof(Color), typeof(CropperImageView), Colors.Black);
+    public static readonly BindableProperty EditButtonColorProperty = BindableProperty.Create(nameof(EditButtonColor), typeof(Color), typeof(CropperImageView), Colors.Black);
     public static readonly BindableProperty ButtonsScaleProperty = BindableProperty.Create(nameof(ButtonsScale), typeof(double), typeof(CropperImageView), 1d);
     public static readonly BindableProperty SelectButtonColorProperty = BindableProperty.Create(nameof(SelectButtonColor), typeof(Color), typeof(CropperImageView), Colors.Black);
     public static readonly BindableProperty SelectButtonScaleProperty = BindableProperty.Create(nameof(SelectButtonScale), typeof(double), typeof(CropperImageView), 1d);
     public static readonly BindableProperty ShowSelectButtonProperty = BindableProperty.Create(nameof(ShowSelectButton), typeof(bool), typeof(CropperImageView), true, propertyChanged: (b, o, n) => { if (o != n && n is bool value) ((CropperImageView)b).SetButtonsVisibility(); });
     public static readonly BindableProperty ShowPickButtonProperty = BindableProperty.Create(nameof(ShowPickButton), typeof(bool), typeof(CropperImageView), true, propertyChanged: (b, o, n) => { if (o != n && n is bool value) ((CropperImageView)b).SetButtonsVisibility(); });
     public static readonly BindableProperty ShowZoomButtonsProperty = BindableProperty.Create(nameof(ShowZoomButtons), typeof(bool), typeof(CropperImageView), (DeviceInfo.Current.Platform == DevicePlatform.WinUI), propertyChanged: (b, o, n) => { if (o != n && n is bool value) ((CropperImageView)b).SetButtonsVisibility(); });
+    public static readonly BindableProperty ShowEditButtonProperty = BindableProperty.Create(nameof(ShowEditButton), typeof(bool), typeof(CropperImageView), true, propertyChanged: (b, o, n) => { if (o != n && n is bool value) ((CropperImageView)b).SetButtonsVisibility(); });
 
     /// <summary>
     /// Sets the crop radius based on control's width/height percentage
@@ -290,9 +294,32 @@ public partial class CropperImageView : ContentView
         }
     }
     /// <summary>
+    /// String markup data for edit button icon
+    /// </summary>
+    public string EditButtonData
+    {
+        get => (string)GetValue(EditButtonDataProperty);
+        set
+        {
+            SetValue(EditButtonDataProperty, value);
+            try
+            {
+                EditPath.Data = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(value);
+            }
+            catch
+            {
+                EditPath.Data = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(EDITBUTTONDATA);
+            }
+        }
+    }
+    /// <summary>
     /// Color for zoom and pick buttons
     /// </summary>
     public Color ButtonsColor { get => (Color)GetValue(ButtonsColorProperty); set => SetValue(ButtonsColorProperty, value); }
+    /// <summary>
+    /// Color for edit button
+    /// </summary>
+    public Color EditButtonColor { get => (Color)GetValue(ButtonsColorProperty); set => SetValue(ButtonsColorProperty, value); }
     /// <summary>
     /// Scale for zoom and pick buttons
     /// </summary>
@@ -317,10 +344,15 @@ public partial class CropperImageView : ContentView
     /// Show/hide Pick button
     /// </summary>
     public bool ShowZoomButtons { get => (bool)GetValue(ShowZoomButtonsProperty); set => SetValue(ShowZoomButtonsProperty, value); }
+    /// <summary>
+    /// Show/hide Edit button
+    /// </summary>
+    public bool ShowEditButton { get => (bool)GetValue(ShowEditButtonProperty); set => SetValue(ShowEditButtonProperty, value); }
 
-    public Command MoreZoomCmd { get; set; }
-    public Command LessZoomCmd { get; set; }
-    public Command SelectCommand { get; set; }
+    public Command MoreZoomCmd { get; private set; }
+    public Command LessZoomCmd { get; private set; }
+    public Command SelectCommand { get; private set; }
+    public Command EditCommand { get; private set; }
     private bool cropping = false;
     private byte[] imageData;
     private bool cropRect = false;
@@ -339,6 +371,7 @@ public partial class CropperImageView : ContentView
         MoreZoomCmd = new Command(() => { MoreZoom(); });
         LessZoomCmd = new Command(() => { LessZoom(); });
         SelectCommand = new Command(() => { SelectImage(); });
+        EditCommand = new Command(() => { EditMode = true; });
         InitializeComponent();
         skCanvas.PaintSurface += SkCanvas_PaintSurface;
         PanGestureRecognizer panGesture = new();
@@ -354,6 +387,7 @@ public partial class CropperImageView : ContentView
         LessPath.Data = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(LESSBUTTONDATA);
         SelectPath.Data = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(SELECTBUTTONDATA);
         PickPath.Data = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(PICKBUTTONDATA);
+        EditPath.Data = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(EDITBUTTONDATA);
     }
     /// <summary>
     /// Execute the image crop async. Refresh CroppedImage and CroppedImageBytes properties at ends.
@@ -474,6 +508,7 @@ public partial class CropperImageView : ContentView
         selectButton.IsVisible = ShowSelectButton && !hasImage && EditMode;
         changeButton.IsVisible = ShowPickButton && hasImage && EditMode;
         zoomButtons.IsVisible = ShowZoomButtons && hasImage && EditMode;
+        editButton.IsVisible = ShowEditButton && !EditMode;
     }
     private static Size GetResultSize(Size max, double width, double height)
     {

@@ -40,5 +40,13 @@
                 </Path.GestureRecognizers>
             </Path>
         </HorizontalStackLayout>
+        <HorizontalStackLayout x:Name="editButton" HorizontalOptions="End" VerticalOptions="End" Padding="5" IsVisible="true" Margin="0,0,15,5">
+            <Path x:Name="EditPath" BindingContext="{x:Reference imageView}" HorizontalOptions="Center" VerticalOptions="Center"
+                      Stroke="{Binding EditButtonColor}" Fill="transparent" Scale="{Binding ButtonsScale}">
+                <Path.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding EditCommand}" />
+                </Path.GestureRecognizers>
+            </Path>
+        </HorizontalStackLayout>
     </Grid>
 </ContentView>

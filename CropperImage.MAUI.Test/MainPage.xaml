@@ -15,7 +15,7 @@
             <ci:PortraitView x:Name="portrait" WidthRequest="90" HeightRequest="90" Text="HA" FontSize="40"/>
         </HorizontalStackLayout>
         <VerticalStackLayout Grid.Row="1" VerticalOptions="Center" HorizontalOptions="Center">
-            <ci:CropperImageView x:Name="cropper" HorizontalOptions="Center" WidthRequest="300" HeightRequest="300" EditMode="True" 
+            <ci:CropperImageView x:Name="cropper" HorizontalOptions="Center" WidthRequest="300" HeightRequest="300" 
                                  ButtonsColor="White" CropperFigure="Circle" ShowSelectButton="False" SelectSourceOnTap="True"/>
             <HorizontalStackLayout>
                 <Button Text="Crop Circle" HorizontalOptions="Center" Margin="5" Clicked="Button1_Clicked" />

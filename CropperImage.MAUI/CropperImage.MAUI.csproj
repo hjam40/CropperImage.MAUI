@@ -17,7 +17,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>CropperImage.MAUI</Title>
-		<Version>1.0.1</Version>
+		<Version>1.1.0</Version>
 		<Authors>hjam40</Authors>
 		<Description>An image cropper and portrait library (using SkiaSharp) for .NET MAUI applications.</Description>
 		<PackageIcon>CropperImageIcon.png</PackageIcon>
@@ -28,6 +28,7 @@
 		<PackageProjectUrl>https://github.com/hjam40/CropperImage.MAUI</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/hjam40/CropperImage.MAUI</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
+		<PackageReleaseNotes>Added Edit button</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>

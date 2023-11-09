@@ -394,13 +394,7 @@ public partial class CropperImageView : ContentView
     /// </summary>
     /// <param name="CropRect">Indicates if you want a cropped square image as cropped result</param>
     /// <returns></returns>
-    public Task CropImageAsync(bool CropRect = false)
-    {
-        return Task.Run(async () =>
-        {
-            var result = await CropImage(CropRect);
-        });
-    }
+    public Task CropImageAsync(bool CropRect = false) => CropImage(CropRect);
 
     /// <summary>
     /// Execute the image crop async. Refresh CroppedImage and CroppedImageBytes properties at ends.
